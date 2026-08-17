@@ -1,0 +1,1 @@
+export {default as skillsRouter} from './skills.controller.js'

@@ -1,0 +1,6 @@
+export * from './Home/index.js'
+export * from './About/index.js'
+export * from './project/index.js'
+export * from './skills/index.js'
+export * from './education/index.js'
+export * from './contact/index.js'

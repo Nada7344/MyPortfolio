@@ -1,0 +1,1 @@
+export {default as educationRouter} from './education.controller.js'
