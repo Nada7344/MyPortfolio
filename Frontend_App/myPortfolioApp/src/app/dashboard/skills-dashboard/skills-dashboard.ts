@@ -6,21 +6,6 @@ import { SkillsService } from '../../core/services/skills';
 
 const DESC_MAX_LENGTH = 200;
 
-interface SkillGlyph {
-  symbol: string;
-  color: string;
-}
-
-// نفس الـ glyphs المستخدمة بالظبط في الصفحة الحقيقية للمهارات اللي معندهاش icon URL
-const SKILL_GLYPHS: Record<string, SkillGlyph> = {
-  'jwt': { symbol: '{ }', color: '#34D399' },
-  'restful apis': { symbol: '{ }', color: '#34D399' },
-  'joi': { symbol: 'J', color: '#8B5CF6' },
-  'multer': { symbol: '↑', color: '#60A5FA' },
-};
-
-const DEFAULT_GLYPH: SkillGlyph = { symbol: '?', color: '#9e96b4' };
-
 @Component({
   selector: 'app-skills-dashboard',
   imports: [ReactiveFormsModule, CommonModule],
@@ -57,9 +42,8 @@ export class SkillsDashboard implements OnInit {
     return (this.skillsForm.get('description')?.value || '').length;
   }
 
-  getGlyph(name: string): SkillGlyph {
-    const key = (name || '').trim().toLowerCase();
-    return SKILL_GLYPHS[key] || DEFAULT_GLYPH;
+  getInitial(name: string): string {
+    return (name || '').trim().charAt(0).toUpperCase() || '?';
   }
 
   hasIcon(item: any): boolean {

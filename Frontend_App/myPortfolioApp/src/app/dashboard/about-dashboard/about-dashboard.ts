@@ -98,7 +98,6 @@ export class AboutDashboard implements OnInit {
     });
   }
 
-  // بنجيب الاسم بس للعرض، مش بيتحفظ من هنا
   loadHomeContext(): void {
     this._homeService.getHome().subscribe({
       next: (home) => {

@@ -70,9 +70,7 @@
               @if (hasIcon(item)) {
                 <img [src]="asFormGroup(item).get('icon')?.value" alt="">
               } @else {
-                <span [style.color]="getGlyph(asFormGroup(item).get('name')?.value).color">
-                  {{ getGlyph(asFormGroup(item).get('name')?.value).symbol }}
-                </span>
+             <span>{{ getInitial(asFormGroup(item).get('name')?.value) }}</span>
               }
             </div>
 
@@ -116,9 +114,7 @@
               @if (hasIcon(item)) {
                 <img [src]="asFormGroup(item).get('icon')?.value" alt="">
               } @else {
-                <span [style.color]="getGlyph(asFormGroup(item).get('name')?.value).color">
-                  {{ getGlyph(asFormGroup(item).get('name')?.value).symbol }}
-                </span>
+              <span>{{ getInitial(asFormGroup(item).get('name')?.value) }}</span>
               }
             </div>
             <span>{{ asFormGroup(item).get('name')?.value }}</span>
