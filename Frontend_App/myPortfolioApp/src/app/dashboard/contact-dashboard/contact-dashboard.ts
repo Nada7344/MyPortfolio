@@ -123,7 +123,6 @@ export class ContactDashboard implements OnInit {
   }
 
   private patchForm(data: IContact): void {
-    // الحقول اللي مش موجودة في الواجهة، بنسيبها زي ما هي وقت الحفظ
     this.preservedFields = {
       badgeMethod: data.badgeMethod,
       badgeEndpoint: data.badgeEndpoint,
@@ -200,7 +199,7 @@ export class ContactDashboard implements OnInit {
   }
 
   addItem(key: ContactItemType['key']): void {
-    this.contactForm.get(key)?.setValue(' '); // placeholder value عشان يبان الحقل فورًا للتعديل
+    this.contactForm.get(key)?.setValue(' ');
     this.showAddMenu = false;
   }
 

@@ -25,7 +25,6 @@ export class EducationDashboard implements OnInit {
   titleMaxLength = TITLE_MAX_LENGTH;
   subtitleMaxLength = SUBTITLE_MAX_LENGTH;
 
-  // محلي بس (مش موجود في الـ Schema) - بيتعرض في المعاينة فقط
   sectionTitle = new FormControl('Education & Training');
 
   itemsForm = new FormArray<FormGroup>([]);

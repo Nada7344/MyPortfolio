@@ -20,8 +20,7 @@ export class About implements OnInit {
   loading = true;
   error = false;
 
-  // About schema has no "name" field — same approach as the dashboard:
-  // fetch it from Home just for display (terminal snippet).
+  
   displayName = '';
 
   ngOnInit(): void {

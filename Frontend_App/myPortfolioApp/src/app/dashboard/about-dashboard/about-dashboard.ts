@@ -35,7 +35,6 @@ export class AboutDashboard implements OnInit {
   bioMaxLength = BIO_MAX_LENGTH;
   descMaxLength = DESC_MAX_LENGTH;
 
-  // لسه بنجيب الاسم بس من الـ Home، لأنه مش موجود في About schema
   displayName = '';
 
   aboutForm = new FormGroup({
