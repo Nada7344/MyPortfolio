@@ -1,0 +1,162 @@
+@if (loading) {
+
+  <section id="contact" class="section contact-loading">
+    <div class="loading-container">
+      <div class="loader"></div>
+      <p>Loading contact...</p>
+    </div>
+  </section>
+
+}
+
+@else if (error) {
+
+  <section id="contact" class="section contact-error">
+    <div class="error-container">
+      <h2>Unable to load contact section</h2>
+      <p>Please try again later.</p>
+    </div>
+  </section>
+
+}
+
+@else if (contact) {
+
+  <section id="contact" class="section contact-section">
+      <div class="badge"><span class="dot"></span> {{ contact.badgeMethod }} {{ contact.badgeEndpoint }} &nbsp;·&nbsp; <span class="ok">{{ contact.badgeStatus }}</span></div>
+
+      <h2 class="contact-heading">
+        <span class="line-strong">{{ contact.heading }}</span>
+        <span class="line-ghost">{{ contact.headingGhost }}</span>
+      </h2>
+
+      <p class="section-sub contact-sub">{{ contact.subtitle }}</p>
+
+      <div class="contact-layout">
+
+        <form class="contact-form" (ngSubmit)="onSubmit(contactFormRef)" #contactFormRef="ngForm">
+          <div class="form-row">
+            <div class="field">
+              <label for="cf-name">Name</label>
+              <input id="cf-name" name="Name" type="text" [placeholder]="contact.namePlaceholder"
+                     [(ngModel)]="formData.name" required minlength="2"
+                     #nameField="ngModel"
+                     [class.invalid]="nameField.invalid && nameField.touched">
+              @if (nameField.invalid && nameField.touched) {
+                <span class="field-error">
+                  @if (nameField.errors?.['required']) { Name is required }
+                  @if (nameField.errors?.['minlength']) { Name is too short }
+                </span>
+              }
+            </div>
+
+            @if (contact.showEmailField) {
+            <div class="field">
+              <label for="cf-email">Email</label>
+              <input id="cf-email" name="Email" type="email" [placeholder]="contact.emailPlaceholder"
+                     [(ngModel)]="formData.email" required email
+                     #emailField="ngModel"
+                     [class.invalid]="emailField.invalid && emailField.touched">
+              @if (emailField.invalid && emailField.touched) {
+                <span class="field-error">
+                  @if (emailField.errors?.['required']) { Email is required }
+                  @if (emailField.errors?.['email']) { Invalid email format }
+                </span>
+              }
+            </div>
+            }
+          </div>
+
+          @if (contact.showReasonField) {
+          <div class="field">
+            <label for="cf-subject">Reason</label>
+            <div class="select-wrap">
+              <select id="cf-subject" name="Reason" [(ngModel)]="formData.reason"
+                      required
+                      #reasonField="ngModel"
+                      [class.invalid]="reasonField.invalid && reasonField.touched">
+                <option value="" disabled selected>Select...</option>
+                @for (option of contact.reasonOptions; track option) {
+                  <option [value]="option">{{ option }}</option>
+                }
+              </select>
+              <svg viewBox="0 0 24 24" class="select-arrow">
+                <path d="M6 9l6 6 6-6" />
+              </svg>
+            </div>
+            @if (reasonField.invalid && reasonField.touched) {
+              <span class="field-error">Please select a reason</span>
+            }
+          </div>
+          }
+
+          <div class="field">
+            <label for="cf-message">Message</label>
+            <textarea id="cf-message" name="Message" rows="5" [placeholder]="contact.messagePlaceholder"
+                      [(ngModel)]="formData.message" required minlength="10"
+                      #messageField="ngModel"
+                      [class.invalid]="messageField.invalid && messageField.touched"></textarea>
+            @if (messageField.invalid && messageField.touched) {
+              <span class="field-error">
+                @if (messageField.errors?.['required']) { Message is required }
+                @if (messageField.errors?.['minlength']) { Message is too short (min 10 characters) }
+              </span>
+            }
+          </div>
+
+          <button type="submit" class="btn-submit" [disabled]="!contact.enableFormSubmission || sending">
+            {{ sending ? 'Sending...' : 'Submit' }}
+          </button>
+
+          @if (sendSuccess) {
+            <p class="form-status form-status-success">Your message has been sent successfully.</p>
+          }
+          @if (sendError) {
+            <p class="form-status form-status-error">Something went wrong. Please try again.</p>
+          }
+        </form>
+
+        <div class="contact-side">
+          <a [href]="'mailto:' + contact.email" class="side-link">
+            <svg viewBox="0 0 24 24" class="icon">
+              <path
+                d="M4 5.5C4 4.7 4.7 4 5.5 4h13c.8 0 1.5.7 1.5 1.5v13c0 .8-.7 1.5-1.5 1.5h-13A1.5 1.5 0 0 1 4 18.5v-13z" />
+              <path d="M4.5 5.5l7.5 6 7.5-6" fill="none" stroke="#081226" stroke-width="1.3" />
+            </svg>
+            <span>{{ contact.email }}</span>
+          </a>
+          @if (contact.showPhoneField && contact.phone) {
+          <a [href]="'tel:' + contact.phone" class="side-link">
+            <svg viewBox="0 0 24 24" class="icon">
+              <path
+                d="M6.6 10.8c1.4 2.8 3.8 5.2 6.6 6.6l2.2-2.2c.3-.3.7-.4 1.1-.2 1.2.4 2.5.6 3.8.6.6 0 1 .4 1 1V20c0 .6-.4 1-1 1C10.9 21 3 13.1 3 3.7c0-.6.4-1 1-1h3.4c.6 0 1 .4 1 1 0 1.3.2 2.6.6 3.8.1.4 0 .8-.2 1.1L6.6 10.8z" />
+            </svg>
+            <span>{{ contact.phone }}</span>
+          </a>
+          }
+          <a [href]="contact.linkedin" class="side-link" target="_blank" rel="noopener">
+            <svg viewBox="0 0 24 24" class="icon" fill="none" stroke="currentColor" stroke-width="1.2">
+              <path
+                d="M4.98 3.5a2 2 0 1 1 0 4 2 2 0 0 1 0-4zM3 9h4v12H3zM9 9h3.8v1.7h.05c.53-.95 1.83-1.95 3.77-1.95 4.03 0 4.78 2.5 4.78 5.76V21h-4v-5.6c0-1.34-.02-3.06-1.86-3.06-1.87 0-2.16 1.45-2.16 2.96V21H9z" />
+            </svg>
+            <span>{{ contact.linkedin }}</span>
+          </a>
+          <a [href]="contact.github" class="side-link" target="_blank" rel="noopener">
+            <svg viewBox="0 0 24 24" class="icon" fill="none" stroke="currentColor" stroke-width="1.6">
+              <path
+                d="M12 2a10 10 0 0 0-3.16 19.49c.5.09.68-.22.68-.48v-1.7c-2.78.6-3.37-1.34-3.37-1.34-.46-1.16-1.11-1.47-1.11-1.47-.9-.62.07-.6.07-.6 1 .07 1.53 1.03 1.53 1.03.9 1.52 2.36 1.08 2.93.83.09-.65.35-1.08.63-1.33-2.22-.25-4.56-1.11-4.56-4.94 0-1.09.39-1.98 1.03-2.68-.1-.25-.45-1.27.1-2.65 0 0 .84-.27 2.75 1.02a9.6 9.6 0 0 1 5 0c1.91-1.3 2.75-1.02 2.75-1.02.55 1.38.2 2.4.1 2.65.64.7 1.03 1.59 1.03 2.68 0 3.84-2.35 4.68-4.58 4.93.36.31.68.92.68 1.85v2.74c0 .27.18.58.69.48A10 10 0 0 0 12 2z" />
+            </svg>
+            <span>{{ contact.github }}</span>
+          </a>
+          <div class="side-link no-hover">
+            <svg viewBox="0 0 24 24" class="icon">
+              <path d="M12 21s-7-6.1-7-11a7 7 0 0 1 14 0c0 4.9-7 11-7 11z" />
+              <circle cx="12" cy="10" r="2.4" />
+            </svg>
+            <span>{{ contact.location }}</span>
+          </div>
+        </div>
+
+      </div>
+    </section>
+}

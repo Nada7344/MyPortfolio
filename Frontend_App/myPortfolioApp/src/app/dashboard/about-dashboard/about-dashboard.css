@@ -1,0 +1,1039 @@
+/* =========================================================
+   DASHBOARD
+========================================================= */
+
+.dashboard {
+  min-height: 100vh;
+  padding: 28px;
+  background: #0b0716;
+  color: #ddd7ed;
+  font-family: system-ui, sans-serif;
+}
+
+
+/* =========================================================
+   HEADER
+========================================================= */
+
+.dashboard-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 20px;
+  margin-bottom: 22px;
+}
+
+.title-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.dashboard-header h1 {
+  margin: 0;
+  color: #ffffff;
+  font-size: 24px;
+  font-weight: 700;
+}
+
+.dashboard-header p {
+  margin: 7px 0 0;
+  color: #9188a8;
+  font-size: 13px;
+}
+
+.badge-manage {
+  padding: 6px 11px;
+  border-radius: 20px;
+  background: #17112e;
+  border: 1px solid #34275c;
+  color: #a78bfa;
+  font-size: 11px;
+}
+
+
+/* =========================================================
+   HEADER ACTIONS
+========================================================= */
+
+.header-actions {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.autosaved-pill {
+  padding: 7px 12px;
+  border-radius: 20px;
+  background: rgba(74, 222, 128, 0.08);
+  border: 1px solid rgba(74, 222, 128, 0.3);
+  color: #4ade80;
+  font-size: 12px;
+}
+
+.btn-save {
+  border: none;
+  border-radius: 7px;
+  padding: 11px 20px;
+  background: #7655ff;
+  color: #fff;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: 0.2s ease;
+}
+
+.btn-save:hover {
+  background: #8568ff;
+  transform: translateY(-1px);
+}
+
+.btn-save:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+
+/* =========================================================
+   MESSAGE
+========================================================= */
+
+.save-message {
+  margin: 0 0 16px;
+  padding: 10px 14px;
+  border-radius: 7px;
+  background: rgba(118, 85, 255, 0.08);
+  border: 1px solid rgba(118, 85, 255, 0.25);
+  color: #a78bfa;
+  font-size: 12px;
+}
+
+
+/* =========================================================
+   TABS
+========================================================= */
+
+.about-tabs {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  margin-bottom: 20px;
+  padding: 5px;
+  background: #120d25;
+  border: 1px solid #2d234d;
+  border-radius: 9px;
+  width: fit-content;
+}
+
+.about-tabs button {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 18px;
+  border: none;
+  border-radius: 6px;
+  background: transparent;
+  color: #9188a8;
+  font-size: 13px;
+  cursor: pointer;
+  transition: 0.2s ease;
+}
+
+.about-tabs button:hover {
+  color: #ffffff;
+}
+
+.about-tabs button.active {
+  background: #7655ff;
+  color: #ffffff;
+  box-shadow: 0 5px 18px rgba(118, 85, 255, 0.2);
+}
+
+.tab-icon {
+  font-size: 12px;
+}
+
+
+/* =========================================================
+   MAIN LAYOUT
+========================================================= */
+
+.dashboard-layout {
+  display: grid;
+  grid-template-columns: minmax(0, 1.35fr) minmax(360px, 0.85fr);
+  gap: 20px;
+  align-items: start;
+}
+
+.editor,
+.focus-editor {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+
+/* =========================================================
+   PANELS
+========================================================= */
+
+.panel {
+  padding: 22px;
+  background: #140f28;
+  border: 1px solid #2d234d;
+  border-radius: 11px;
+}
+
+.panel-heading {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 15px;
+  margin-bottom: 20px;
+}
+
+.panel-title {
+  margin: 0;
+  color: #ffffff;
+  font-size: 15px;
+  font-weight: 600;
+}
+
+.panel-description {
+  margin: 5px 0 0;
+  color: #6f6684;
+  font-size: 11px;
+  line-height: 1.5;
+}
+
+.items-count {
+  padding: 5px 9px;
+  border-radius: 15px;
+  background: #1c1536;
+  border: 1px solid #34275c;
+  color: #a78bfa;
+  font-size: 10px;
+}
+
+
+/* =========================================================
+   FORM
+========================================================= */
+
+.form-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+}
+
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+  margin-bottom: 17px;
+}
+
+.field label {
+  color: #a69dbb;
+  font-size: 12px;
+}
+
+.label-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.field input,
+.field textarea,
+.focus-editor-card input,
+.focus-editor-card textarea {
+  width: 100%;
+  box-sizing: border-box;
+  background: #0f0a1f;
+  border: 1px solid #2d234d;
+  border-radius: 7px;
+  padding: 10px 11px;
+  color: #ffffff;
+  font-size: 13px;
+  transition: 0.2s ease;
+}
+
+.field textarea,
+.focus-editor-card textarea {
+  resize: vertical;
+  line-height: 1.6;
+}
+
+.field input:focus,
+.field textarea:focus,
+.focus-editor-card input:focus,
+.focus-editor-card textarea:focus {
+  outline: none;
+  border-color: #7655ff;
+  box-shadow: 0 0 0 2px rgba(118, 85, 255, 0.08);
+}
+
+.field input:disabled {
+  color: #6f6684;
+  cursor: not-allowed;
+}
+
+.hint-inline {
+  color: #5f5872;
+  font-size: 10px;
+}
+
+.char-count {
+  color: #625a76;
+  font-size: 10px;
+}
+
+
+/* =========================================================
+   CHIPS
+========================================================= */
+
+.chips {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+}
+
+.chip {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  padding: 4px 6px 4px 10px;
+  background: #1b1435;
+  border: 1px solid #34275c;
+  border-radius: 7px;
+}
+
+.chip input {
+  width: 85px;
+  padding: 5px 2px;
+  border: none;
+  background: transparent;
+  color: #ffffff;
+  font-size: 12px;
+}
+
+.chip input:focus {
+  outline: none;
+  box-shadow: none;
+}
+
+.chip button {
+  border: none;
+  background: transparent;
+  color: #827995;
+  cursor: pointer;
+  font-size: 15px;
+}
+
+.chip button:hover {
+  color: #f87171;
+}
+
+.chip-large input {
+  width: 100px;
+}
+
+.btn-add-chip {
+  padding: 7px 12px;
+  border: 1px dashed #493b70;
+  border-radius: 7px;
+  background: transparent;
+  color: #a78bfa;
+  font-size: 11px;
+  cursor: pointer;
+}
+
+.btn-add-chip:hover {
+  border-color: #7655ff;
+  background: rgba(118, 85, 255, 0.06);
+}
+
+
+/* =========================================================
+   PREVIEW CONTAINER
+========================================================= */
+
+.preview {
+  background: #140f28;
+  border: 1px solid #2d234d;
+  border-radius: 11px;
+  overflow: hidden;
+}
+
+.preview-topbar {
+  padding: 13px 16px;
+  background: #1b1435;
+  border-bottom: 1px solid #2d234d;
+  color: #a78bfa;
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.preview-subtitle {
+  margin: 0;
+  padding: 9px 16px;
+  background: #18122f;
+  color: #69617d;
+  font-size: 10px;
+}
+
+.preview-content {
+  padding: 24px;
+}
+
+.preview-breadcrumb {
+  color: #625a76;
+  font-size: 10px;
+}
+
+.preview-content h2 {
+  margin: 7px 0 20px;
+  color: #ffffff;
+  font-size: 24px;
+}
+
+.preview-intro {
+  max-width: 100%;
+}
+
+.preview-lead {
+  margin: 0 0 9px;
+  color: #ddd7ed;
+  font-size: 13px;
+  line-height: 1.7;
+}
+
+.preview-desc {
+  margin: 0;
+  color: #827995;
+  font-size: 12px;
+  line-height: 1.7;
+}
+
+
+/* =========================================================
+   BADGES
+========================================================= */
+
+.preview-badges {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 7px;
+  margin: 22px 0;
+}
+
+.preview-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 10px;
+  background: #1b1435;
+  border: 1px solid #34275c;
+  border-radius: 20px;
+  color: #ddd7ed;
+  font-size: 10px;
+}
+
+.preview-badge .dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: #4ade80;
+}
+
+
+/* =========================================================
+   FOCUS LAYOUT
+========================================================= */
+
+.focus-layout {
+  display: grid;
+  grid-template-columns: minmax(0, 1.35fr) minmax(360px, 0.85fr);
+  gap: 20px;
+  align-items: start;
+}
+
+
+/* =========================================================
+   FOCUS EDITOR
+========================================================= */
+
+.focus-number {
+  width: 30px;
+  height: 30px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #1d1538;
+  border: 1px solid #34275c;
+  border-radius: 7px;
+  color: #a78bfa;
+  font-size: 10px;
+  font-weight: 600;
+}
+
+.drag-handle {
+  color: #625a76;
+  font-size: 17px;
+  cursor: grab;
+}
+
+.focus-card-top .btn-delete {
+  margin-left: auto;
+}
+
+.focus-fields {
+  display: grid;
+  grid-template-columns: 110px 1fr;
+  gap: 12px;
+  margin-bottom: 4px;
+}
+
+.focus-icon-field input {
+  text-align: center;
+}
+
+.focus-editor-card .field {
+  margin-bottom: 0;
+}
+
+.focus-editor-card label {
+  color: #8e86a3;
+  font-size: 11px;
+}
+
+.btn-delete {
+  padding: 7px 9px;
+  border: 1px solid rgba(248, 113, 113, 0.25);
+  border-radius: 6px;
+  background: rgba(248, 113, 113, 0.08);
+  color: #f87171;
+  cursor: pointer;
+}
+
+.btn-delete:hover {
+  background: rgba(248, 113, 113, 0.14);
+}
+
+.btn-add-focus {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  margin-top: 16px;
+  padding: 12px;
+  border: 1px dashed #493b70;
+  border-radius: 8px;
+  background: transparent;
+  color: #a78bfa;
+  font-size: 12px;
+  cursor: pointer;
+}
+
+.btn-add-focus span {
+  font-size: 17px;
+}
+
+.btn-add-focus:hover {
+  background: rgba(118, 85, 255, 0.05);
+  border-color: #7655ff;
+}
+
+
+/* =========================================================
+   FOCUS PREVIEW
+   Same visual language as the public About page
+========================================================= */
+
+.preview-description {
+  margin: -10px 0 20px;
+  color: #716982;
+  font-size: 11px;
+  line-height: 1.6;
+}
+
+
+/* ---------------------------------------------------------
+   SECTION TITLE
+--------------------------------------------------------- */
+
+.preview-focus-section {
+  margin-top: 34px;
+}
+
+.preview-section-label {
+  color: #8b5cf6;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 2.5px;
+  text-transform: uppercase;
+}
+
+.preview-section-line {
+  width: 44px;
+  height: 2px;
+  margin-top: 10px;
+  margin-bottom: 20px;
+  background: #7655ff;
+}
+
+
+/* ---------------------------------------------------------
+   FOCUS SCROLL
+--------------------------------------------------------- */
+
+.preview-focus-scroll {
+  height: 470px;
+  max-height: 470px;
+
+  display: flex;
+  flex-direction: column;
+
+  gap: 14px;
+
+  overflow-y: auto;
+  overflow-x: hidden;
+
+  padding: 2px 8px 8px 2px;
+
+  scroll-behavior: smooth;
+
+  scrollbar-width: thin;
+  scrollbar-color: #49357f transparent;
+}
+
+
+/* Chrome / Edge / Safari */
+
+.preview-focus-scroll::-webkit-scrollbar {
+  width: 5px;
+}
+
+.preview-focus-scroll::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.preview-focus-scroll::-webkit-scrollbar-thumb {
+  background: #49357f;
+  border-radius: 10px;
+}
+
+.preview-focus-scroll::-webkit-scrollbar-thumb:hover {
+  background: #7655ff;
+}
+
+
+/* ---------------------------------------------------------
+   PUBLIC STYLE FOCUS CARD
+--------------------------------------------------------- */
+
+.public-focus-card {
+  position: relative;
+
+  flex: 0 0 auto;
+
+  min-height: 205px;
+
+  padding: 18px 24px 22px;
+
+  box-sizing: border-box;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+
+  border-radius: 14px;
+
+  border: 1px solid #513b91;
+
+  background:
+    linear-gradient(
+      135deg,
+      #25164b 0%,
+      #1a1235 100%
+    );
+
+  overflow: hidden;
+
+  transition:
+    border-color 0.2s ease,
+    transform 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+.public-focus-card:hover {
+  border-color: #7655ff;
+
+  transform: translateY(-2px);
+
+  box-shadow:
+    0 10px 30px rgba(118, 85, 255, 0.12);
+}
+
+
+/* ---------------------------------------------------------
+   CARD NUMBER
+--------------------------------------------------------- */
+
+.public-focus-number {
+  position: absolute;
+
+  top: 18px;
+  left: 18px;
+
+  width: 36px;
+  height: 32px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  border: 1px solid #7655ff;
+  border-radius: 6px;
+
+  color: #8b6cff;
+
+  background: rgba(118, 85, 255, 0.05);
+
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px;
+}
+
+
+/* ---------------------------------------------------------
+   CARD ICON
+--------------------------------------------------------- */
+
+.public-focus-icon {
+  width: 62px;
+  height: 62px;
+
+  margin-top: 8px;
+  margin-bottom: 14px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  border-radius: 14px;
+
+  border: 1px solid #543c91;
+
+  background: rgba(118, 85, 255, 0.08);
+
+  color: #8b5cf6;
+
+  font-size: 28px;
+  font-weight: 500;
+}
+
+
+/* ---------------------------------------------------------
+   ICON TYPES
+--------------------------------------------------------- */
+
+.icon-code {
+  color: #8b5cf6;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 25px;
+  font-weight: 500;
+}
+
+.icon-shield {
+  color: #8b5cf6;
+  font-size: 24px;
+}
+
+.icon-layers {
+  color: #8b5cf6;
+  font-size: 26px;
+}
+
+
+/* ---------------------------------------------------------
+   CARD TITLE
+--------------------------------------------------------- */
+
+.public-focus-card h3 {
+  margin: 0;
+
+  color: #ffffff;
+
+  font-size: 17px;
+  font-weight: 700;
+
+  line-height: 1.4;
+}
+
+
+/* ---------------------------------------------------------
+   TITLE UNDERLINE
+--------------------------------------------------------- */
+
+.public-focus-line {
+  width: 38px;
+  height: 3px;
+
+  margin: 8px 0 12px;
+
+  border-radius: 10px;
+
+  background: #7655ff;
+}
+
+
+/* ---------------------------------------------------------
+   CARD DESCRIPTION
+--------------------------------------------------------- */
+
+.public-focus-card p {
+  max-width: 350px;
+
+  margin: 0;
+
+  color: #b8add6;
+
+  font-size: 11px;
+
+  line-height: 1.7;
+}
+
+
+/* =========================================================
+   TERMINAL
+========================================================= */
+
+.preview-terminal {
+  margin-top: 22px;
+
+  overflow: hidden;
+
+  background: #0b0817;
+
+  border: 1px solid #302451;
+
+  border-radius: 9px;
+}
+
+.terminal-header {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+
+  padding: 9px 12px;
+
+  border-bottom: 1px solid #292044;
+
+  color: #625a76;
+
+  font-size: 9px;
+}
+
+.terminal-dots {
+  display: flex;
+  gap: 5px;
+}
+
+.terminal-dots span {
+  width: 7px;
+  height: 7px;
+
+  border-radius: 50%;
+
+  background: #3b3154;
+}
+
+.terminal-dots span:nth-child(1) {
+  background: #f87171;
+}
+
+.terminal-dots span:nth-child(2) {
+  background: #fbbf24;
+}
+
+.terminal-dots span:nth-child(3) {
+  background: #4ade80;
+}
+
+.preview-terminal pre {
+  margin: 0;
+
+  padding: 16px;
+
+  overflow-x: auto;
+
+  color: #a5f3fc;
+
+  font-size: 10px;
+
+  line-height: 1.7;
+
+  font-family: 'JetBrains Mono', monospace;
+}
+
+.focus-terminal {
+  margin-top: 24px;
+}
+
+
+/* =========================================================
+   FULL PREVIEW
+========================================================= */
+
+.full-preview {
+  width: 100%;
+}
+
+.full-preview-card {
+  width: 100%;
+}
+
+.full-preview-content {
+  max-width: 1100px;
+  margin: auto;
+  padding: 35px 40px 50px;
+}
+
+.full-preview-intro {
+  max-width: 750px;
+}
+
+
+/* =========================================================
+   LOADING
+========================================================= */
+
+.loading-text {
+  padding: 50px;
+  text-align: center;
+  color: #9188a8;
+}
+
+
+/* =========================================================
+   RESPONSIVE
+========================================================= */
+
+@media (max-width: 1100px) {
+
+  .dashboard-layout,
+  .focus-layout {
+    grid-template-columns: 1fr;
+  }
+
+  .preview {
+    margin-top: 0;
+  }
+
+}
+
+
+@media (max-width: 800px) {
+
+  .dashboard {
+    padding: 18px;
+  }
+
+  .dashboard-header {
+    flex-direction: column;
+  }
+
+  .header-actions {
+    width: 100%;
+  }
+
+  .btn-save {
+    flex: 1;
+  }
+
+  .about-tabs {
+    width: 100%;
+    overflow-x: auto;
+  }
+
+  .about-tabs button {
+    flex: 1;
+    white-space: nowrap;
+  }
+
+  .form-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .focus-fields {
+    grid-template-columns: 1fr;
+  }
+
+  .preview-focus-scroll {
+    height: 430px;
+    max-height: 430px;
+  }
+
+  .public-focus-card {
+    min-height: 195px;
+  }
+
+  .full-preview-content {
+    padding: 25px 18px;
+  }
+
+}
+
+
+@media (max-width: 500px) {
+
+  .title-row {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+
+  .header-actions {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .autosaved-pill {
+    text-align: center;
+  }
+
+  .about-tabs button {
+    padding: 9px 11px;
+    font-size: 11px;
+  }
+
+  .panel {
+    padding: 16px;
+  }
+
+  .preview-content {
+    padding: 18px;
+  }
+
+  .public-focus-card {
+    min-height: 190px;
+    padding-left: 18px;
+    padding-right: 18px;
+  }
+
+  .public-focus-number {
+    top: 14px;
+    left: 14px;
+  }
+
+  .public-focus-icon {
+    width: 56px;
+    height: 56px;
+  }
+
+}

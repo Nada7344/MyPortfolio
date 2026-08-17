@@ -1,0 +1,122 @@
+@if (loading) {
+
+  <section id="about" class="section about-loading">
+    <div class="loading-container">
+      <div class="loader"></div>
+      <p>Loading about...</p>
+    </div>
+  </section>
+
+}
+
+@else if (error) {
+
+  <section id="about" class="section about-error">
+    <div class="error-container">
+      <h2>Unable to load about section</h2>
+      <p>Please try again later.</p>
+    </div>
+  </section>
+
+}
+
+@else if (about) {
+
+   <section id="about" class="section">
+      <div class="section-head">
+        <span class="crumb">/about</span>
+        <h2>About Me</h2>
+        <span class="title-bar"></span>
+      </div>
+
+      <div class="about-grid">
+
+        <div>
+          <p class="about-lead">
+            {{ about.leadText }}
+          </p>
+          <p class="about-desc">
+            {{ about.description }}
+          </p>
+
+          <div class="about-badges">
+            @for (badge of about.badges; track badge._id ?? badge.name) {
+              <span class="hero-badge">
+                <img class="hero-badge-icon" [src]="badge.icon" alt="">{{ badge.name }}
+              </span>
+            }
+          </div>
+        </div>
+
+        <div class="about-media">
+          <div class="terminal">
+            <div class="terminal-bar">
+              <span class="tdot red"></span><span class="tdot yellow"></span><span class="tdot green"></span>
+              <span class="terminal-title">developer.info</span>
+              <span class="terminal-tag">PROFILE // 01</span>
+            </div>
+            <div class="terminal-body">
+             <pre class="tline">{{ '{' }}
+  <span class="tkey">"name"</span>: <span class="tstr">"{{ displayName }}"</span>,
+  <span class="tkey">"role"</span>: <span class="tstr">"{{ about.role }}"</span>,
+  <span class="tkey">"location"</span>: <span class="tstr">"{{ about.location }}"</span>,
+  <span class="tkey">"focus"</span>: [
+    @for (area of about.focusAreas; track area; let last = $last) {
+    <span class="tstr">"{{ area }}"</span>@if (!last) { ,
+    }
+    }
+  ]
+{{ '}' }}</pre>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+      <div class="focus-head">
+        <span class="focus-label">WHAT I FOCUS ON</span>
+      </div>
+
+      <div class="focus-grid">
+
+        @for (card of about.focusCards; track card._id ?? card.title; let i = $index) {
+        <div class="focus-card">
+          <span class="focus-num">{{ (i + 1) < 10 ? '0' + (i + 1) : (i + 1) }}</span>
+          <div class="focus-icon">
+            @switch (card.icon) {
+              @case ('api') {
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"
+                  stroke-linejoin="round">
+                  <path d="M8 5L3 12l5 7M16 5l5 7-5 7" />
+                </svg>
+              }
+              @case ('security') {
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"
+                  stroke-linejoin="round">
+                  <path d="M12 2l8 3.5v6c0 5-3.4 8.9-8 10.5-4.6-1.6-8-5.5-8-10.5v-6L12 2z" />
+                  <rect x="9.3" y="11.2" width="5.4" height="4.3" rx="0.9" />
+                  <path d="M10.3 11.2v-1.4a1.7 1.7 0 0 1 3.4 0v1.4" />
+                </svg>
+              }
+              @case ('architecture') {
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"
+                  stroke-linejoin="round">
+                  <path d="M12 2l9 5-9 5-9-5 9-5zM3 12l9 5 9-5M3 17l9 5 9-5" />
+                </svg>
+              }
+              @default {
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"
+                  stroke-linejoin="round">
+                  <circle cx="12" cy="12" r="9" />
+                </svg>
+              }
+            }
+          </div>
+          <h3>{{ card.title }}</h3>
+          <p>{{ card.description }}</p>
+        </div>
+        }
+
+      </div>
+    </section>
+}

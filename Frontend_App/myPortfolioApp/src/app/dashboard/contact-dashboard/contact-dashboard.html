@@ -1,0 +1,286 @@
+<section class="dashboard">
+
+@if (loading) {
+  <p class="loading-text">Loading...</p>
+} @else {
+
+<form id="contactForm" [formGroup]="contactForm" (ngSubmit)="saveContact()">
+
+  <header class="dashboard-header">
+    <div>
+      <div class="title-row">
+        <h1>Contact</h1>
+        <span class="badge-manage">Manage your contact section</span>
+      </div>
+      <p>Update your contact information and how people can reach you.</p>
+    </div>
+
+    <div class="header-actions">
+      <span class="autosaved-pill">✓ Auto-saved</span>
+      <button type="submit" class="btn-save" [disabled]="saving">
+        {{ saving ? 'Saving...' : 'Save Changes' }}
+      </button>
+    </div>
+  </header>
+
+  @if (message) {
+    <p class="save-message">{{ message }}</p>
+  }
+
+  <div class="dashboard-layout dashboard-layout-3col">
+
+    <!-- COLUMN 1: SECTION CONTENT -->
+    <main class="editor">
+
+      <section class="panel">
+        <h3 class="panel-title">📄 Section Content</h3>
+
+        <div class="field">
+          <label>Title</label>
+          <input type="text" formControlName="title" maxlength="50">
+          <span class="char-count">{{ titleLength }} / {{ titleMaxLength }}</span>
+        </div>
+
+        <div class="field">
+          <label>Subtitle</label>
+          <textarea formControlName="subtitle" rows="3" maxlength="150"></textarea>
+          <span class="char-count">{{ subtitleLength }} / {{ subtitleMaxLength }}</span>
+        </div>
+
+        <h4 class="sub-panel-title">📋 Contact Form Settings</h4>
+
+        <div class="form-grid">
+          <div class="field">
+            <label>Name Placeholder</label>
+            <input type="text" formControlName="namePlaceholder">
+          </div>
+          <div class="field">
+            <label>Email Placeholder</label>
+            <input type="text" formControlName="emailPlaceholder">
+          </div>
+        </div>
+
+        <div class="field" formArrayName="reasonOptions">
+          <label>Reason Options</label>
+          <div class="reason-rows">
+            @for (option of reasonOptions.controls; track $index) {
+            <div
+              class="reason-row"
+              draggable="true"
+              (dragstart)="onDragStart($index)"
+              (dragover)="onDragOver($event)"
+              (drop)="onDrop($index)"
+            >
+              <span class="drag-handle">⠿</span>
+              <input type="text" [formControlName]="$index" placeholder="Option text">
+              <button type="button" class="chip-x" (click)="removeReasonOption($index)">×</button>
+            </div>
+            }
+          </div>
+          <button type="button" class="btn-add-full" (click)="addReasonOption()">
+            + Add Option
+          </button>
+        </div>
+
+        <div class="field">
+          <label>Message Placeholder</label>
+          <textarea formControlName="messagePlaceholder" rows="3" maxlength="200"></textarea>
+          <span class="char-count">{{ messagePlaceholderLength }} / {{ messagePlaceholderMaxLength }}</span>
+        </div>
+
+        <button type="submit" class="btn-save btn-save-full" [disabled]="saving">
+          💾 {{ saving ? 'Saving...' : 'Save Changes' }}
+        </button>
+      </section>
+
+    </main>
+
+    <!-- COLUMN 2: CONTACT INFO + FORM SETTINGS -->
+    <div class="editor">
+
+      <section class="panel">
+        <h3 class="panel-title">📇 Contact Information</h3>
+        <p class="panel-subtitle">Add or update your contact details.</p>
+
+        <div class="contact-item-rows">
+          @for (item of activeItems; track item.key) {
+          <div class="contact-item-row">
+            <span class="contact-item-icon">{{ item.icon }}</span>
+            <div class="contact-item-body">
+              <span class="contact-item-label">{{ item.label }}</span>
+              <input type="text" [formControlName]="item.key" [placeholder]="item.label">
+            </div>
+            <button type="button" class="chip-x" (click)="removeItem(item.key)">×</button>
+          </div>
+          }
+        </div>
+
+        @if (hiddenItems.length > 0) {
+        <div class="add-item-wrapper">
+          <button type="button" class="btn-add-full" (click)="toggleAddMenu()">
+            + Add New Contact Item
+          </button>
+
+          @if (showAddMenu) {
+          <div class="add-item-menu">
+            @for (item of hiddenItems; track item.key) {
+            <button type="button" class="add-item-option" (click)="addItem(item.key)">
+              {{ item.icon }} {{ item.label }}
+            </button>
+            }
+          </div>
+          }
+        </div>
+        }
+      </section>
+
+      <section class="panel">
+        <h3 class="panel-title">⚙ Form Settings</h3>
+        <p class="panel-subtitle">Configure the contact form behavior.</p>
+
+        <div class="toggle-row">
+          <span>Show Reason Field</span>
+          <label class="switch">
+            <input type="checkbox" formControlName="showReasonField">
+            <span class="slider"></span>
+          </label>
+        </div>
+
+        <div class="toggle-row">
+          <span>Show Email Field</span>
+          <label class="switch">
+            <input type="checkbox" formControlName="showEmailField">
+            <span class="slider"></span>
+          </label>
+        </div>
+
+        <div class="toggle-row">
+          <span>Show Phone in Form</span>
+          <label class="switch">
+            <input type="checkbox" formControlName="showPhoneField">
+            <span class="slider"></span>
+          </label>
+        </div>
+
+        <div class="toggle-row">
+          <span>Enable Form Submission</span>
+          <label class="switch">
+            <input type="checkbox" formControlName="enableFormSubmission">
+            <span class="slider"></span>
+          </label>
+        </div>
+      </section>
+
+    </div>
+
+    <!-- COLUMN 3: LIVE PREVIEW -->
+    <aside class="preview">
+      <div class="preview-topbar">
+        <span>👁 Live Preview</span>
+      </div>
+      <p class="preview-subtitle">This is how your Contact section will appear on your portfolio.</p>
+
+      <div class="preview-content">
+        <span class="preview-breadcrumb">
+          ● {{ contactForm.value.enableFormSubmission ? 'POST' : 'POST' }} /contact
+        </span>
+
+        <h2 class="preview-heading">
+          {{ (contactForm.value.title || '').split(' ').slice(0, -1).join(' ') }}
+          <span class="ghost">{{ (contactForm.value.title || '').split(' ').slice(-1)[0] }}</span>
+        </h2>
+
+        <p class="preview-desc-line">{{ contactForm.value.subtitle }}</p>
+
+        <div class="preview-form-and-info">
+
+          <form class="preview-form">
+            <div class="form-grid">
+              <div class="field">
+                <label>Name</label>
+                <input type="text" disabled [placeholder]="contactForm.value.namePlaceholder || 'Your Name'">
+              </div>
+
+              @if (contactForm.value.showEmailField) {
+              <div class="field">
+                <label>Email</label>
+                <input type="text" disabled [placeholder]="contactForm.value.emailPlaceholder || 'Your@email.com'">
+              </div>
+              }
+            </div>
+
+            @if (contactForm.value.showReasonField) {
+            <div class="field">
+              <label>Reason</label>
+              <select disabled>
+                <option>Select...</option>
+                @for (option of reasonOptions.controls; track $index) {
+                <option>{{ option.value }}</option>
+                }
+              </select>
+            </div>
+            }
+
+            @if (contactForm.value.showPhoneField) {
+            <div class="field">
+              <label>Phone</label>
+              <input type="text" disabled placeholder="Your phone number">
+            </div>
+            }
+
+            <div class="field">
+              <label>Message</label>
+              <textarea disabled rows="3" [placeholder]="contactForm.value.messagePlaceholder || 'Message'"></textarea>
+            </div>
+
+            <button type="button" class="pv-submit-btn" [disabled]="!contactForm.value.enableFormSubmission">
+              Submit
+            </button>
+          </form>
+
+          <div class="preview-info-list">
+            @if (itemValue('email')) {
+            <div class="preview-info-row">
+              <span class="contact-item-icon">✉</span>
+              <span>{{ itemValue('email') }}</span>
+            </div>
+            }
+            @if (itemValue('phone')) {
+            <div class="preview-info-row">
+              <span class="contact-item-icon">📞</span>
+              <span>{{ itemValue('phone') }}</span>
+            </div>
+            }
+            @if (itemValue('linkedin')) {
+            <div class="preview-info-row">
+              <span class="contact-item-icon">in</span>
+              <span>{{ itemValue('linkedin') }}</span>
+            </div>
+            }
+            @if (itemValue('github')) {
+            <div class="preview-info-row">
+              <span class="contact-item-icon">⌥</span>
+              <span>{{ itemValue('github') }}</span>
+            </div>
+            }
+            @if (itemValue('location')) {
+            <div class="preview-info-row">
+              <span class="contact-item-icon">📍</span>
+              <span>{{ itemValue('location') }}</span>
+            </div>
+            }
+          </div>
+
+        </div>
+
+        <p class="preview-footer">© 2026 {{ displayName }} · {{ displayRole }}</p>
+      </div>
+    </aside>
+
+  </div>
+
+</form>
+
+}
+
+</section>

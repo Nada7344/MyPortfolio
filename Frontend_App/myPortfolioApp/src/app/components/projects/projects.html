@@ -1,0 +1,66 @@
+@if (loading) {
+
+  <section id="projects" class="section projects-loading">
+    <div class="loading-container">
+      <div class="loader"></div>
+      <p>Loading projects...</p>
+    </div>
+  </section>
+
+}
+
+@else if (error) {
+
+  <section id="projects" class="section projects-error">
+    <div class="error-container">
+      <h2>Unable to load projects</h2>
+      <p>Please try again later.</p>
+    </div>
+  </section>
+
+}
+
+@else {
+
+ <section id="projects" class="section">
+      <div class="section-head">
+        <div class="badge"><span class="dot"></span> GET /projects &nbsp;·&nbsp; <span class="ok">200 OK</span></div>
+        <h2>Selected Work</h2>
+        <p class="section-sub">Backend systems built end-to-end — from schema design to deployed API.</p>
+      </div>
+
+      <div class="project-grid">
+
+        @for (project of projects; track project._id) {
+        <article class="project-card">
+          <div class="project-top">
+            <span class="method">{{ project.method }}</span>
+            <span class="endpoint">{{ project.endpoint }}</span>
+          </div>
+          <h3>{{ project.title }}</h3>
+          <p class="project-desc">
+            {{ project.description }}
+          </p>
+          <ul class="project-points">
+            @for (point of project.points; track $index) {
+              <li>{{ point }}</li>
+            }
+          </ul>
+          <div class="tag-row">
+            @for (tag of project.tags; track $index) {
+              <span class="tag">{{ tag }}</span>
+            }
+          </div>
+          @if (project.sourceUrl) {
+            <a [href]="project.sourceUrl" class="project-link" target="_blank" rel="noopener">
+              View source <span class="arrow">→</span>
+            </a>
+          } @else {
+            <span class="endpoint"></span>
+          }
+        </article>
+        }
+
+      </div>
+    </section>
+}

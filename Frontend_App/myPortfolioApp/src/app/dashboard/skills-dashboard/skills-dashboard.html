@@ -1,0 +1,141 @@
+<section class="dashboard">
+
+@if (loading) {
+  <p class="loading-text">Loading...</p>
+} @else {
+
+<form [formGroup]="skillsForm" (ngSubmit)="saveSkills()">
+
+  <header class="dashboard-header">
+    <div>
+      <div class="title-row">
+        <h1>Skills</h1>
+        <span class="badge-manage">Manage your skills section</span>
+      </div>
+      <p>Add, edit and reorder the technologies and tools you use.</p>
+    </div>
+
+    <div class="header-actions">
+      <span class="autosaved-pill">✓ Auto-saved</span>
+      <button type="submit" class="btn-save" [disabled]="saving">
+        {{ saving ? 'Saving...' : 'Save Changes' }}
+      </button>
+    </div>
+  </header>
+
+  @if (message) {
+    <p class="save-message">{{ message }}</p>
+  }
+
+  <div class="dashboard-layout">
+
+    <!-- LEFT COLUMN -->
+    <main class="editor">
+
+      <section class="panel">
+        <h3 class="panel-title">▤ Section Description</h3>
+        <p class="panel-subtitle">This description appears under the Skills title.</p>
+
+        <div class="field">
+          <textarea formControlName="description" rows="3" maxlength="200"></textarea>
+          <span class="char-count">{{ descriptionLength }} / {{ descMaxLength }}</span>
+        </div>
+      </section>
+
+      <section class="panel">
+        <div class="panel-header-row">
+          <div>
+            <h3 class="panel-title">☰ Skills List</h3>
+            <p class="panel-subtitle">Add, edit or reorder your skills. Changes are reflected in the preview.</p>
+          </div>
+          <button type="button" class="btn-add-inline" (click)="addSkill()">
+            + Add New Skill
+          </button>
+        </div>
+
+        <div class="skill-rows" formArrayName="items">
+          @for (item of items.controls; track $index) {
+          <div
+            class="skill-row"
+            [formGroupName]="$index"
+            draggable="true"
+            (dragstart)="onDragStart($index)"
+            (dragover)="onDragOver($event)"
+            (drop)="onDrop($index)"
+          >
+            <span class="drag-handle">☰</span>
+            <span class="row-number">{{ $index + 1 }}</span>
+
+            <div class="skill-icon-preview" [class.has-icon]="hasIcon(item)">
+              @if (hasIcon(item)) {
+                <img [src]="asFormGroup(item).get('icon')?.value" alt="">
+              } @else {
+                <span [style.color]="getGlyph(asFormGroup(item).get('name')?.value).color">
+                  {{ getGlyph(asFormGroup(item).get('name')?.value).symbol }}
+                </span>
+              }
+            </div>
+
+            <input type="text" formControlName="name" class="skill-name-input" placeholder="Skill name">
+            <input type="text" formControlName="icon" class="skill-icon-input" placeholder="Icon URL">
+
+            <button type="button" class="icon-btn icon-btn-danger" (click)="removeSkill($index)">🗑</button>
+          </div>
+          }
+        </div>
+
+        <p class="hint">🖐 Drag and drop to reorder skills</p>
+      </section>
+
+    </main>
+
+    <!-- RIGHT: LIVE PREVIEW -->
+    <aside class="preview">
+      <div class="preview-topbar">
+        <span>👁 Live Preview</span>
+      </div>
+      <p class="preview-subtitle">This is how your Skills section will appear on your portfolio.</p>
+
+      <div class="preview-content">
+        <span class="preview-breadcrumb">/skills</span>
+        <h2>Skills</h2>
+        <span class="preview-underline"></span>
+
+        <p class="preview-desc-line">{{ skillsForm.value.description }}</p>
+
+        <div class="tech-stack-divider">
+          <span></span>
+          <p>// TECH STACK</p>
+          <span></span>
+        </div>
+
+        <div class="preview-skills-grid">
+          @for (item of items.controls; track $index) {
+          <div class="preview-skill-chip">
+            <div class="preview-skill-icon" [class.has-icon]="hasIcon(item)">
+              @if (hasIcon(item)) {
+                <img [src]="asFormGroup(item).get('icon')?.value" alt="">
+              } @else {
+                <span [style.color]="getGlyph(asFormGroup(item).get('name')?.value).color">
+                  {{ getGlyph(asFormGroup(item).get('name')?.value).symbol }}
+                </span>
+              }
+            </div>
+            <span>{{ asFormGroup(item).get('name')?.value }}</span>
+          </div>
+          }
+        </div>
+
+        <div class="always-learning-box">
+          ✦ Always learning new technologies
+        </div>
+      </div>
+    </aside>
+
+  </div>
+
+</form>
+
+}
+
+</section>

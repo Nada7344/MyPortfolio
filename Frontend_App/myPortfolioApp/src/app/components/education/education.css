@@ -1,0 +1,78 @@
+/* =========================================================
+   Education timeline
+   ========================================================= */
+
+.timeline {
+  position: relative;
+  padding-left: 32px;
+  display: flex;
+  flex-direction: column;
+  gap: 40px;
+}
+
+.timeline::before {
+  content: "";
+  position: absolute;
+  left: 5px;
+  top: 6px;
+  bottom: 6px;
+  width: 1px;
+  background: linear-gradient(var(--accent), transparent);
+}
+
+/* the progress line "draws" itself in as the section scrolls into view */
+@supports (animation-timeline: view()) {
+  .timeline::before {
+    transform-origin: top;
+    transform: scaleY(0);
+    animation: timelineDraw linear both;
+    animation-timeline: view();
+    animation-range: entry 10% cover 70%;
+  }
+}
+
+@keyframes timelineDraw {
+  to {
+    transform: scaleY(1);
+  }
+}
+
+.timeline-item {
+  position: relative;
+}
+
+.timeline-dot {
+  position: absolute;
+  left: -32px;
+  top: 4px;
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: var(--bg);
+  border: 2px solid var(--accent);
+  box-shadow: 0 0 12px rgba(139, 92, 246, 0.4);
+  transition: box-shadow 0.25s ease, transform 0.25s ease;
+}
+
+.timeline-item:hover .timeline-dot {
+  box-shadow: 0 0 18px rgba(139, 92, 246, 0.75);
+  transform: scale(1.15);
+}
+
+.timeline-date {
+  font-family: var(--font-mono);
+  font-size: 0.8rem;
+  color: var(--accent);
+  letter-spacing: 0.02em;
+}
+
+.timeline-content h3 {
+  font-size: 1.15rem;
+  margin: 8px 0 6px;
+}
+
+.timeline-content p {
+  color: var(--text-dim);
+  font-size: 0.94rem;
+  max-width: 560px;
+}

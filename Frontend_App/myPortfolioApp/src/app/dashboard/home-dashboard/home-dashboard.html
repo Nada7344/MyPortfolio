@@ -1,0 +1,264 @@
+<section class="dashboard">
+
+  @if (loading) {
+  <p class="loading-text">Loading...</p>
+  } @else {
+
+  <form [formGroup]="homeForm" (ngSubmit)="saveHome()">
+
+    <header class="dashboard-header">
+      <div>
+        <h1>Edit Home Section</h1>
+        <p>Update your hero section content and personal information</p>
+      </div>
+
+      <button type="submit" class="btn-save" [disabled]="saving">
+        {{ saving ? 'Saving...' : 'Save Changes' }}
+      </button>
+    </header>
+
+    @if (message) {
+    <p class="save-message">{{ message }}</p>
+    }
+
+    <div class="dashboard-layout">
+
+      <!-- LEFT: EDITOR -->
+      <main class="editor">
+
+        <nav class="tabs">
+          <button type="button" [class.active]="activeTab === 'content'"
+            (click)="setActiveTab('content')">Content</button>
+          <button type="button" [class.active]="activeTab === 'social'" (click)="setActiveTab('social')">Social
+            Links</button>
+          <button type="button" [class.active]="activeTab === 'terminal'" (click)="setActiveTab('terminal')">Terminal
+            Stack</button>
+          <button type="button" [class.active]="activeTab === 'profile'" (click)="setActiveTab('profile')">Profile &
+            Resume</button>
+        </nav>
+
+        <!-- CONTENT TAB -->
+        @if (activeTab === 'content') {
+        <section class="panel">
+
+          <div class="form-grid">
+            <div class="field">
+              <label for="name">Name</label>
+              <input id="name" type="text" formControlName="name">
+            </div>
+
+            <div class="field">
+              <label for="role">Role</label>
+              <input id="role" type="text" formControlName="role">
+            </div>
+          </div>
+
+          <div class="field" formArrayName="roleHighlight">
+            <label>Role Highlight</label>
+            <div class="chips">
+              @for (ctrl of roleHighlight.controls; track $index) {
+              <span class="chip">
+                <input type="text" [formControlName]="$index">
+                <button type="button" (click)="removeRoleHighlight($index)">×</button>
+              </span>
+              }
+              <button type="button" class="btn-add-chip" (click)="addRoleHighlight()">+ Add</button>
+            </div>
+          </div>
+
+          <div class="field">
+            <label for="bio">Bio</label>
+            <textarea id="bio" formControlName="bio" rows="4"></textarea>
+          </div>
+
+          <div class="form-grid" formGroupName="availability">
+            <div class="field switch-field">
+              <label>Availability</label>
+              <label class="switch">
+                <input type="checkbox" formControlName="isAvailable">
+                <span class="slider"></span>
+              </label>
+            </div>
+          </div>
+
+          <div class="form-grid" formGroupName="availability">
+            <div class="field">
+              <label for="availabilityTitle">Title</label>
+              <input id="availabilityTitle" type="text" formControlName="title">
+            </div>
+
+            <div class="field">
+              <label for="availabilityDescription">Description</label>
+              <input id="availabilityDescription" type="text" formControlName="description">
+            </div>
+          </div>
+
+        </section>
+        }
+
+        <!-- SOCIAL LINKS TAB -->
+        @if (activeTab === 'social') {
+        <section class="panel" formGroupName="socialLinks">
+
+          <div class="field">
+            <label for="email">Email</label>
+            <input id="email" type="email" formControlName="email">
+          </div>
+
+          <div class="field">
+            <label for="linkedin">LinkedIn</label>
+            <input id="linkedin" type="url" formControlName="linkedin">
+          </div>
+
+          <div class="field">
+            <label for="github">GitHub</label>
+            <input id="github" type="url" formControlName="github">
+          </div>
+
+        </section>
+        }
+
+        <!-- TERMINAL STACK TAB -->
+        @if (activeTab === 'terminal') {
+        <section class="panel">
+
+          <div class="field" formArrayName="terminalStack">
+            <label>Terminal Stack</label>
+            <div class="chips">
+              @for (ctrl of terminalStack.controls; track $index) {
+              <span class="chip">
+                <input type="text" [formControlName]="$index">
+                <button type="button" (click)="removeStackItem($index)">×</button>
+              </span>
+              }
+              <button type="button" class="btn-add-chip" (click)="addStackItem()">+ Add</button>
+            </div>
+          </div>
+
+        </section>
+        }
+
+        <!-- PROFILE & RESUME TAB -->
+        @if (activeTab === 'profile') {
+        <section class="panel">
+
+          @if (uploadError) {
+            <p class="error-box">{{ uploadError }}</p>
+          }
+
+          <div class="field">
+            <label>Profile Image</label>
+
+            @if (homeForm.value.profileImage) {
+            <div class="upload-card">
+              <img [src]="resolveFileUrl(homeForm.value.profileImage)" class="upload-thumb" alt="profile preview">
+              <div class="upload-info">
+                <strong>Profile photo</strong>
+                <span>Shown on your public site</span>
+              </div>
+              <div class="upload-actions">
+                <label class="btn-change">
+                  {{ uploadingImage ? 'Uploading...' : 'Change' }}
+                  <input type="file" accept="image/png,image/jpeg,image/jpg,image/webp"
+                    (change)="onProfileImageChange($event)" hidden [disabled]="uploadingImage">
+                </label>
+                <button type="button" class="btn-delete" (click)="clearProfileImage()">🗑</button>
+              </div>
+            </div>
+            } @else {
+            <label class="upload-card upload-empty" [class.uploading]="uploadingImage">
+              <span>{{ uploadingImage ? 'Uploading...' : 'Click to upload a profile image (PNG, JPG, WEBP)' }}</span>
+              <input type="file" accept="image/png,image/jpeg,image/jpg,image/webp"
+                (change)="onProfileImageChange($event)" hidden [disabled]="uploadingImage">
+            </label>
+            }
+          </div>
+
+          <div class="field">
+            <label>Resume (PDF)</label>
+
+            @if (homeForm.value.resume) {
+            <div class="upload-card">
+              <div class="upload-icon upload-icon-pdf">📄</div>
+              <div class="upload-info">
+                <a [href]="resolveFileUrl(homeForm.value.resume)" target="_blank" class="resume-link">
+                  View current resume
+                </a>
+                <span>PDF document</span>
+              </div>
+              <div class="upload-actions">
+                <label class="btn-change">
+                  {{ uploadingResume ? 'Uploading...' : 'Change' }}
+                  <input type="file" accept="application/pdf" (change)="onResumeChange($event)" hidden
+                    [disabled]="uploadingResume">
+                </label>
+                <button type="button" class="btn-delete" (click)="clearResume()">🗑</button>
+              </div>
+            </div>
+            } @else {
+            <label class="upload-card upload-empty" [class.uploading]="uploadingResume">
+              <span>{{ uploadingResume ? 'Uploading...' : 'Click to upload your resume (PDF)' }}</span>
+              <input type="file" accept="application/pdf" (change)="onResumeChange($event)" hidden
+                [disabled]="uploadingResume">
+            </label>
+            }
+          </div>
+
+        </section>
+        }
+
+      </main>
+
+      <!-- RIGHT: LIVE PREVIEW -->
+      <aside class="preview">
+        <div class="preview-topbar">This is how it appears on your site</div>
+
+        <div class="preview-content">
+
+          <div class="preview-header">
+            <div>
+              <h2>{{ homeForm.value.name }}</h2>
+              <p class="preview-role">
+                {{ homeForm.value.role }}
+                @for (ctrl of roleHighlight.controls; track $index) {
+                <span> | {{ ctrl.value }}</span>
+                }
+              </p>
+            </div>
+
+            @if (homeForm.value.profileImage) {
+            <img [src]="resolveFileUrl(homeForm.value.profileImage)" class="preview-avatar" alt="profile">
+            }
+          </div>
+
+          <p class="preview-bio">{{ homeForm.value.bio }}</p>
+
+          @if (homeForm.get('availability.isAvailable')?.value) {
+          <div class="preview-availability">
+            <span class="dot"></span>
+            <div>
+              <strong>{{ homeForm.get('availability.title')?.value }}</strong>
+              <span>{{ homeForm.get('availability.description')?.value }}</span>
+            </div>
+          </div>
+          }
+
+          <pre class="preview-code">const developer = &#123;
+  name: "{{ homeForm.value.name }}",
+  role: "{{ homeForm.value.role }}",
+  stack: [
+@for (ctrl of terminalStack.controls; track $index) {
+    "{{ ctrl.value }}"{{ !$last ? ',' : '' }}
+}
+  ]
+&#125;;</pre>
+        </div>
+      </aside>
+
+    </div>
+
+  </form>
+
+  }
+
+</section>

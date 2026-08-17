@@ -1,0 +1,134 @@
+<section class="dashboard">
+
+@if (loading) {
+  <p class="loading-text">Loading...</p>
+} @else {
+
+<header class="dashboard-header">
+  <div>
+    <div class="title-row">
+      <h1>Education &amp; Training</h1>
+      <span class="badge-manage">Manage your education section</span>
+    </div>
+    <p>Add, edit and reorder your academic background and training.</p>
+  </div>
+
+  <div class="header-actions">
+    <span class="autosaved-pill">✓ Auto-saved</span>
+    <button type="button" class="btn-save" [disabled]="saving" (click)="saveAll()">
+      {{ saving ? 'Saving...' : 'Save Changes' }}
+    </button>
+  </div>
+</header>
+
+@if (message) {
+  <p class="save-message">{{ message }}</p>
+}
+
+<div class="dashboard-layout">
+
+  <!-- LEFT COLUMN -->
+  <main class="editor">
+
+    <section class="panel">
+      <h3 class="panel-title">Section Title</h3>
+      <p class="panel-subtitle">This title appears on your portfolio.</p>
+
+      <div class="field">
+        <input type="text" [formControl]="sectionTitle" maxlength="50">
+        <span class="char-count">{{ sectionTitleLength }} / {{ titleMaxLength }}</span>
+      </div>
+    </section>
+
+    <section class="panel">
+      <div class="panel-header-row">
+        <div>
+          <h3 class="panel-title">🎓 Education Items</h3>
+          <p class="panel-subtitle">Add, edit or reorder your education and training items.</p>
+        </div>
+        <button type="button" class="btn-add-inline" (click)="addItem()">
+          + Add New Item
+        </button>
+      </div>
+
+      <div class="edu-rows">
+        @for (item of itemsForm.controls; track $index) {
+        <div
+          class="edu-row"
+          draggable="true"
+          (dragstart)="onDragStart($index)"
+          (dragover)="onDragOver($event)"
+          (drop)="onDrop($index)"
+          [formGroup]="asFormGroup(item)"
+        >
+          <div class="edu-row-top">
+            <span class="drag-handle">☰</span>
+            <span class="row-number">{{ $index + 1 }}</span>
+
+            <div class="edu-fields">
+              <div class="field">
+                <label>Date Range</label>
+                <input type="text" formControlName="dateRange" placeholder="2021 - 2025">
+              </div>
+              <div class="field">
+                <label>Title</label>
+                <input type="text" formControlName="title" placeholder="B.Sc. Computer Science">
+              </div>
+            </div>
+
+            <button type="button" class="icon-btn icon-btn-danger" (click)="removeItem($index)">🗑</button>
+          </div>
+
+          <div class="field edu-subtitle-field">
+            <label>Subtitle / Description</label>
+            <textarea formControlName="subtitle" rows="2" maxlength="200" placeholder="Cairo University — or a longer description of what you did"></textarea>
+            <span class="char-count">{{ subtitleLength(item) }} / {{ subtitleMaxLength }}</span>
+          </div>
+        </div>
+        }
+      </div>
+
+      <button type="button" class="btn-add-full" (click)="addItem()">
+        ⊕ Add New Item
+      </button>
+
+      <p class="hint">💡 Tip: Drag and drop items to reorder them. Changes are autosaved.</p>
+    </section>
+
+  </main>
+
+  <!-- RIGHT: LIVE PREVIEW -->
+  <aside class="preview">
+    <div class="preview-topbar">
+      <span>👁 Live Preview</span>
+    </div>
+    <p class="preview-subtitle">This is how your Education section will appear on your portfolio.</p>
+
+    <div class="preview-content">
+      <span class="preview-breadcrumb">‹ GET /education · 200 OK</span>
+      <h2>{{ sectionTitle.value }}</h2>
+      <span class="preview-underline"></span>
+      <p class="preview-desc-line">Academic background and applied training.</p>
+
+      <div class="timeline">
+        @for (item of itemsForm.controls; track $index) {
+        <div class="timeline-item">
+          <span class="timeline-dot"></span>
+          <span class="timeline-range">{{ asFormGroup(item).get('dateRange')?.value }}</span>
+          <strong class="timeline-title">{{ asFormGroup(item).get('title')?.value }}</strong>
+          <p class="timeline-subtitle">{{ asFormGroup(item).get('subtitle')?.value }}</p>
+        </div>
+        }
+      </div>
+
+      <a class="view-public-link" href="#" target="_blank">
+        View on Public Site ↗
+      </a>
+    </div>
+  </aside>
+
+</div>
+
+}
+
+</section>

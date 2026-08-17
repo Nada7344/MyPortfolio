@@ -1,0 +1,47 @@
+@if (loading) {
+
+  <section id="education" class="section education-loading">
+    <div class="loading-container">
+      <div class="loader"></div>
+      <p>Loading education...</p>
+    </div>
+  </section>
+
+}
+
+@else if (error) {
+
+  <section id="education" class="section education-error">
+    <div class="error-container">
+      <h2>Unable to load education</h2>
+      <p>Please try again later.</p>
+    </div>
+  </section>
+
+}
+
+@else {
+
+    <section id="education" class="section">
+      <div class="section-head">
+        <div class="badge"><span class="dot"></span> GET /education &nbsp;·&nbsp; <span class="ok">200 OK</span></div>
+        <h2>Education &amp; Training</h2>
+        <p class="section-sub">Academic background and applied training.</p>
+      </div>
+
+      <div class="timeline">
+
+        @for (item of items; track item._id) {
+        <div class="timeline-item">
+          <div class="timeline-dot"></div>
+          <div class="timeline-content">
+            <span class="timeline-date">{{ item.dateRange }}</span>
+            <h3>{{ item.title }}</h3>
+            <p>{{ item.subtitle }}</p>
+          </div>
+        </div>
+        }
+
+      </div>
+    </section>
+}

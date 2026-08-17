@@ -1,0 +1,199 @@
+<section class="dashboard">
+
+@if (loading) {
+  <p class="loading-text">Loading...</p>
+} @else {
+
+<header class="dashboard-header">
+  <div>
+    <div class="title-row">
+      <h1>Projects</h1>
+      <span class="badge-manage">Manage your projects section</span>
+    </div>
+    <p>Add, edit, reorder and preview your projects.</p>
+  </div>
+
+  <div class="header-actions">
+    <span class="autosaved-pill">✓ Auto-saved</span>
+    <button type="submit" form="projectForm" class="btn-save" [disabled]="saving">
+      {{ saving ? 'Saving...' : 'Save Changes' }}
+    </button>
+  </div>
+</header>
+
+@if (message) {
+  <p class="save-message">{{ message }}</p>
+}
+
+<div class="dashboard-layout">
+
+  <!-- LEFT COLUMN -->
+  <main class="editor">
+
+    <section class="panel">
+      <div class="panel-header-row">
+        <h3 class="panel-title">🗂 Projects List</h3>
+        <span class="count-pill">{{ projects.length }} Projects</span>
+      </div>
+
+      <div class="project-list">
+        @for (project of projects; track project._id; let i = $index) {
+        <div
+          class="project-row"
+          [class.active]="selectedProjectId === project._id"
+          draggable="true"
+          (dragstart)="onDragStart(i)"
+          (dragover)="onDragOver($event)"
+          (drop)="onDrop(i)"
+          (click)="selectProject(project)"
+        >
+          <span class="drag-handle">☰</span>
+          <span class="row-number">{{ i + 1 }}</span>
+
+          <div class="row-main">
+            <div class="row-meta">
+              <span class="method-badge" [class]="'method-' + project.method.toLowerCase()">{{ project.method }}</span>
+              <span class="row-endpoint">{{ project.endpoint }}</span>
+            </div>
+            <strong class="row-title">{{ project.title }}</strong>
+            <p class="row-desc">{{ project.description }}</p>
+          </div>
+
+          <div class="row-actions">
+            <button type="button" class="icon-btn" (click)="selectProject(project); $event.stopPropagation()">✎</button>
+            <button type="button" class="icon-btn" (click)="duplicateProject(project, $event)">⧉</button>
+            <button type="button" class="icon-btn icon-btn-danger" (click)="removeProject(project, $event)">🗑</button>
+          </div>
+        </div>
+        }
+      </div>
+
+      <button type="button" class="btn-add-full" (click)="startNewProject()">
+        ⊕ Add New Project
+      </button>
+    </section>
+
+    <section class="panel">
+      <h3 class="panel-title">&lt;/&gt; Project Details</h3>
+
+      <form id="projectForm" [formGroup]="detailsForm" (ngSubmit)="saveProject()">
+
+        <div class="form-grid form-grid-3">
+          <div class="field">
+            <label for="order">Order</label>
+            <input id="order" type="number" formControlName="order">
+          </div>
+          <div class="field">
+            <label for="method">Method</label>
+            <select id="method" formControlName="method">
+              <option value="GET">GET</option>
+              <option value="POST">POST</option>
+              <option value="PUT">PUT</option>
+              <option value="DELETE">DELETE</option>
+            </select>
+          </div>
+          <div class="field">
+            <label for="endpoint">Endpoint</label>
+            <input id="endpoint" type="text" formControlName="endpoint" placeholder="/projects/my-project">
+          </div>
+        </div>
+
+        <div class="field">
+          <label for="title">Title</label>
+          <input id="title" type="text" formControlName="title" maxlength="100" placeholder="Project title">
+          <span class="char-count">{{ titleLength }}/{{ titleMaxLength }}</span>
+        </div>
+
+        <div class="field">
+          <label for="description">Description</label>
+          <textarea id="description" formControlName="description" rows="3" maxlength="300"></textarea>
+          <span class="char-count">{{ descriptionLength }}/{{ descMaxLength }}</span>
+        </div>
+
+        <div class="field" formArrayName="points">
+          <label>Highlights (bullet points)</label>
+          <div class="chips">
+            @for (point of points.controls; track $index) {
+            <span class="chip chip-wide">
+              <input type="text" [formControlName]="$index" placeholder="Highlight point">
+              <button type="button" (click)="removePoint($index)">×</button>
+            </span>
+            }
+            <button type="button" class="btn-add-chip" (click)="addPoint()">+</button>
+          </div>
+        </div>
+
+        <div class="field" formArrayName="tags">
+          <label>Tags</label>
+          <div class="chips">
+            @for (tag of tags.controls; track $index) {
+            <span class="chip">
+              <input type="text" [formControlName]="$index" placeholder="Node.js">
+              <button type="button" (click)="removeTag($index)">×</button>
+            </span>
+            }
+            <button type="button" class="btn-add-chip" (click)="addTag()">+</button>
+          </div>
+        </div>
+
+        <div class="field">
+          <label for="sourceUrl">Source URL</label>
+          <input id="sourceUrl" type="text" formControlName="sourceUrl" placeholder="https://github.com/...">
+        </div>
+
+      </form>
+    </section>
+
+  </main>
+
+  <!-- RIGHT: LIVE PREVIEW -->
+  <aside class="preview">
+    <div class="preview-topbar">
+      <span>👁 Live Preview</span>
+    </div>
+    <p class="preview-subtitle">This is how your projects section will appear on your portfolio.</p>
+
+    <div class="preview-content">
+      <h2>Selected Work</h2>
+      <p class="preview-desc-line">Backend systems built end-to-end — from schema design to deployed API.</p>
+
+      @for (project of projects; track project._id; let i = $index) {
+      <div class="preview-project-card">
+        <div class="preview-project-meta">
+          <span class="preview-project-number">{{ (i + 1) < 10 ? '0' + (i + 1) : (i + 1) }}</span>
+          <span class="method-badge" [class]="'method-' + project.method.toLowerCase()">{{ project.method }}</span>
+          <span class="preview-project-endpoint">{{ project.endpoint }}</span>
+        </div> 
+
+        <strong class="preview-project-title">{{ project.title }}</strong>
+        <p class="preview-project-desc">{{ project.description }}</p>
+
+        @if (project.points.length) {
+        <ul class="preview-points">
+          @for (point of project.points; track $index) {
+          <li>{{ point }}</li>
+          }
+        </ul>
+        }
+
+        @if (project.tags.length) {
+        <div class="preview-tags">
+          @for (tag of project.tags; track $index) {
+          <span class="preview-tag">{{ tag }}</span>
+          }
+        </div>
+        }
+      </div>
+      }
+
+      <a class="view-public-link" href="#" target="_blank">
+        View on Public Site ↗
+      </a>
+    </div>
+  </aside>
+
+</div>
+
+}
+
+</section>

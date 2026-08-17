@@ -1,0 +1,56 @@
+@if (loading) {
+
+  <section id="skills" class="section skills-loading">
+    <div class="loading-container">
+      <div class="loader"></div>
+      <p>Loading skills...</p>
+    </div>
+  </section>
+
+}
+
+@else if (error) {
+
+  <section id="skills" class="section skills-error">
+    <div class="error-container">
+      <h2>Unable to load skills</h2>
+      <p>Please try again later.</p>
+    </div>
+  </section>
+
+}
+
+@else if (skills) {
+
+    <section id="skills" class="section">
+      <div class="section-head">
+        <span class="crumb">/skills</span>
+        <h2>Skills</h2>
+        <span class="title-bar"></span>
+        <p class="section-sub">{{ skills.description }}</p>
+      </div>
+
+      <div class="tech-divider"><span>// TECH STACK</span></div>
+
+      <div class="tech-grid">
+
+        @for (item of skills.items; track item._id ?? item.name) {
+        <div class="tech-item">
+          <div class="tech-icon">
+            @if (item.icon && item.icon.startsWith('http')) {
+              <img [src]="item.icon" [alt]="item.name" loading="lazy">
+            } @else {
+              <span class="tech-glyph">{{ item.icon || item.name.charAt(0) }}</span>
+            }
+          </div>
+          <span class="tech-name">{{ item.name }}</span>
+        </div>
+        }
+
+      </div>
+
+      <div class="badge">
+        <span class="dot"></span> Always learning new technologies
+      </div>
+    </section>
+}
