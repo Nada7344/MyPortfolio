@@ -1,3 +1,4 @@
+import { NotFoundException } from "../../common/utils/index.js";
 import { SkillsModel } from "../../DB/models/skills.model.js";
 
 export const getSkills = async () => {
@@ -5,7 +6,7 @@ export const getSkills = async () => {
   const skills = await SkillsModel.findOne();
 
   if (!skills) {
-    throw new Error('Skills data not found');
+    throw NotFoundException({ message: 'Skills data not found' });
   }
 
   return skills;
@@ -28,7 +29,7 @@ export const updateSkills = async (data) => {
   );
 
   if (!skills) {
-    throw new Error('Skills data not found');
+    throw NotFoundException({ message: 'Skills data not found' });
   }
 
   return skills;

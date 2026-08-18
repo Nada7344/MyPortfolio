@@ -1,3 +1,4 @@
+import { NotFoundException } from "../../common/utils/index.js";
 import { ProjectModel } from "../../DB/models/project.model.js";
 
 export const getAllProjects = async () => {
@@ -8,7 +9,7 @@ export const getProjectById = async (id) => {
   const project = await ProjectModel.findOne({ _id: id, isDeleted: false });
 
   if (!project) {
-    throw new Error('Project not found');
+    throw NotFoundException({ message: 'Project not found' });
   }
 
   return project;
@@ -26,7 +27,7 @@ export const updateProject = async (id, data) => {
   );
 
   if (!project) {
-    throw new Error('Project not found');
+    throw NotFoundException({ message: 'Project not found' });
   }
 
   return project;
@@ -40,7 +41,7 @@ export const deleteProject = async (id) => {
   );
 
   if (!project) {
-    throw new Error('Project not found');
+    throw NotFoundException({ message: 'Project not found' });
   }
 
   return project;
@@ -54,7 +55,7 @@ export const restoreProject = async (id) => {
   );
 
   if (!project) {
-    throw new Error('Project not found in trash');
+    throw NotFoundException({ message: 'Project not found in trash' });
   }
 
   return project;

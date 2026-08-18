@@ -1,3 +1,4 @@
+import { NotFoundException } from "../../common/utils/index.js";
 import { EducationModel } from "../../DB/models/education.model.js";
 
 export const getAllEducation = async () => {
@@ -8,7 +9,7 @@ export const getEducationById = async (id) => {
   const item = await EducationModel.findOne({ _id: id, isDeleted: false });
 
   if (!item) {
-    throw new Error('Education item not found');
+    NotFoundException({ message: 'Education item not found' });
   }
 
   return item;
@@ -29,7 +30,7 @@ export const updateEducation = async (id, data) => {
   );
 
   if (!item) {
-    throw new Error('Education item not found');
+    NotFoundException({ message: 'Education item not found' });
   }
 
   return item;
@@ -43,7 +44,7 @@ export const deleteEducation = async (id) => {
   );
 
   if (!item) {
-    throw new Error('Education item not found');
+    NotFoundException({ message: 'Education item not found' });
   }
 
   return item;
@@ -53,11 +54,11 @@ export const restoreEducation = async (id) => {
   const item = await EducationModel.findOneAndUpdate(
     { _id: id, isDeleted: true },
     { isDeleted: false, deletedAt: null },
-    { new: true }
+    { new: true } 
   );
 
   if (!item) {
-    throw new Error('Education item not found in trash');
+    NotFoundException({ message: 'Education item not found in trash' });
   }
 
   return item;

@@ -9,7 +9,7 @@ export const getHome = async () => {
   const home = await HomeModel.findOne();
 
   if (!home) {
-    throw new Error('Home data not found');
+    NotFoundException({ message: 'Home data not found' });
   }
 
   return home;
@@ -27,7 +27,7 @@ export const updateHome = async (data) => {
   );
 
   if (!home) {
-    throw new Error('Home data not found');
+    NotFoundException({ message: 'Home data not found' });
   }
 
   return home;
@@ -60,7 +60,7 @@ export const uploadProfileImage = async (fileUrl) => {
   );
 
   if (!home) {
-    throw NotFoundException('message:{Home data not found}');
+    throw NotFoundException({ message: 'Home data not found' });
   }
 
   return home;
@@ -79,7 +79,7 @@ export const uploadResume = async (fileUrl) => {
   );
 
   if (!home) {
-    throw NotFoundException('message:{Home data not found}');
+    throw NotFoundException({ message:'Home data not found'});
   }
 
   return home;
@@ -91,11 +91,11 @@ export const getResumeForDownload = async () => {
   const home = await HomeModel.findOne();
 
   if (!home) {
-    throw NotFoundException('Home data not found');
+    throw NotFoundException({ message: 'Home data not found' });
   }
 
   if (!home.resume) {
-   throw NotFoundException('Resume not found');
+    throw NotFoundException({ message: 'Resume not found' });
   }
 
   const filePath =  resolve(`..${home.resume}`);

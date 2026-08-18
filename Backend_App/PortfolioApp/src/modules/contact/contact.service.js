@@ -6,7 +6,7 @@ export const getContact = async () => {
   const contact = await ContactModel.findOne();
 
   if (!contact) {
-    throw new Error('Contact data not found');
+    NotFoundException({message:'Contact data not found'});
   }
 
   return contact;
@@ -25,7 +25,7 @@ export const updateContact = async (data) => {
   );
 
   if (!contact) {
-    throw new Error('Contact data not found');
+    NotFoundException({ message: 'Contact data not found' });
   }
 
   return contact;
@@ -38,7 +38,7 @@ export const sendContactEmail = async ({ name, email, reason, message }) => {
   const contact = await ContactModel.findOne();
 
   if (!contact) {
-    throw new Error('Contact data not found');
+    NotFoundException({ message: 'Contact data not found' });
   }
 
   emailEvent.emit("SendEmail", async () => {
